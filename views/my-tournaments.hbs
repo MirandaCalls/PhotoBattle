@@ -1,0 +1,31 @@
+<div class="mt-2"></div>
+{{#if serverMessage}}
+	<div class="alert alert-danger">{{serverMessage}}</div>
+{{/if}}
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">Name</th>
+			<th scope="col"></th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each tourList}}
+		<tr>
+			<td>{{this.name}}</td>
+			<td><a href="/battle/{{this.id}}">Battle</a></td>
+		</tr>
+		{{/each}}
+		<tr>
+			<form id="form_add" action="/my-tournaments" method="POST">
+				<td><div class="form-group">
+					<input type="text" id="name" class="form-control" name="name" placeholder="Name" value="{{formData.name}}" required>
+					<div class="invalid-feedback">
+						Name is required.
+					</div>
+				</div></td>
+				<td><button class="btn btn-primary">Create</button></td>
+			</form>
+		</tr>
+	</tbody>
+</table>

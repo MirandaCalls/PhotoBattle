@@ -1,0 +1,44 @@
+DROP TABLE IF EXISTS users;
+CREATE TABLE users(
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    username      TEXT NOT NULL,
+    password_hash TEXT NOT NULL,
+    UNIQUE(username)
+);
+
+DROP TABLE IF EXISTS photos;
+CREATE TABLE photos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    url TEXT
+);
+
+DROP TABLE IF EXISTS tournaments;
+CREATE TABLE tournaments(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    name TEXT,
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);
+
+DROP TABLE IF EXISTS matchups;
+CREATE TABLE matchups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tour_id INTEGER,
+    round INTEGER,
+    photo_a_id INTEGER,
+    photo_b_id INTEGER,
+    winner_id INTEGER,
+    FOREIGN KEY(tour_id) REFERENCES tournaments(id),
+    FOREIGN KEY(photo_a_id) REFERENCES photos(id),
+    FOREIGN KEY(photo_b_id) REFERENCES photos(id),
+    FOREIGN KEY(winner_id) REFERENCES photos(id)
+);
+
+DROP TABLE IF EXISTS champions;
+CREATE TABLE champions(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tour_id INTEGER,
+    photo_id INTEGER,
+    FOREIGN KEY(tour_id) REFERENCES tournaments(id),
+    FOREIGN KEY(photo_id) REFERENCES photos(id)
+);

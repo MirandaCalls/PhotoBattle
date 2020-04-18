@@ -1,0 +1,26 @@
+<div class="mt-2"></div>
+{{#if serverMessage}}
+	<div class="alert alert-danger">{{serverMessage}}</div>
+{{/if}}
+{{#if matchup}}
+	<form id="battleForm" class="bg-light primary-form battle-form" action="/battle/{{matchup.tour_id}}" method="POST" novalidate>
+		<h3>Round {{matchup.round}}</h3>
+		<img class="img-contestant" data-choice="{{matchup.photo_a_id}}" src="{{matchup.a_url}}">
+		<img class="img-vs" src="/img/vs.png">
+		<img class="img-contestant" data-choice="{{matchup.photo_b_id}}" src="{{matchup.b_url}}">
+		<div class="mt-2"></div>
+		<input type="hidden" name="matchup_id" value="{{matchup.id}}">
+		<input id="choice" name="choice_id" type="hidden">
+		<button id="btn_vote" class="btn btn-primary btn-block" disabled>Vote</button>
+	</form>
+{{/if}}
+<script>
+	$('.img-contestant').on('click', (event) => {
+		$('.img-contestant').removeClass('chosen');
+		let img = $(event.target);
+		img.addClass('chosen');
+
+		$('#choice').prop('value', img.data('choice'));
+		$('#btn_vote').prop('disabled', false);
+	});
+</script>

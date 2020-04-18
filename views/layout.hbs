@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{{title}}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel='stylesheet' href='/css/theme.css' />
+		<link rel='stylesheet' href='/thirdparty/bootstrap.min.css' />
+		<script src='/thirdparty/jquery.min.js'></script>
+		<script src='/thirdparty/bootstrap.bundle.min.js'></script>
+	</head>
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			<a class="navbar-brand" href="/">Photo Battle</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item">
+						{{#if loggedIn}}
+							<a class="nav-item nav-link" href="/my-tournaments">Your Tournaments</a>
+						{{/if}}
+					</li>
+					<li class="nav-item">
+						<a class="nav-item nav-link" href="/champions">Champions</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav">
+					<li class="nav-item dropdown">
+						{{#if loggedIn}}
+							<a class="nav-link dropdown-toggle" href="#" id="profileMenu" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								{{username}}
+							</a>
+							<div class="dropdown-menu" aria-labelledby="profileMenu">
+								<button class="dropdown-item" type="submit" form="logout">Logout</button>
+								<form id="logout" class="d-none" action="/logout" method="POST"></form>
+							</div>
+						{{else}}
+							<li class="nav-item">
+								<a class="nav-item nav-link" href="/login">Login</a>
+							</li>
+						{{/if}}
+					</li>
+				</ul>
+			</div>
+		</nav>
+		<div class="container-fluid">
+			{{{body}}}
+		</div>
+	</body>
+</html>

@@ -1,0 +1,48 @@
+html, body {
+	height: 100%;
+	background-color: #fff;
+}
+
+a {
+	color: #00B7FF;
+}
+
+.primary-form {
+	margin-top: 4rem;
+	margin-right: auto;
+	margin-left: auto;
+    padding: 40px;
+    border: 1px solid #65615e;
+}
+
+.auth-form, .battle-form {
+	width: 100%;
+}
+
+.auth-form {
+	max-width: 380px;
+}
+
+.battle-form {
+	max-width: 800px;
+}
+
+.img-vs {
+	width: 100px;
+}
+
+.img-contestant {
+	max-width: 300px;
+	border: 1px solid grey;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.chosen {
+	background-color: #007bff;	
+}
+
+.img-contestant:hover {
+	cursor: pointer;
+	background-color: #007bff;	
+}
