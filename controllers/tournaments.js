@@ -145,7 +145,8 @@ module.exports.TourController = class TourController {
         try {
             response = await axios.get(this.photo_url);
         } catch (error) {
-            return error.toString();
+            console.log(error.toString());
+            return 'API Error: Unable to fetch images for a new tournament.';
         }
         let photos = response.data.data;
         if (photos.length < 16) {
