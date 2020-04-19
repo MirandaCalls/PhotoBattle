@@ -117,8 +117,7 @@ module.exports.TourController = class TourController {
         }
 
         let new_round = oldRound + 1;
-        let count = old_matchups.length / 2;
-        for (let i = 0; i < count; i=i+2) {
+        for (let i = 0; i < old_matchups.length; i=i+2) {
             let matchup = new EntityMatchup(
                 0,
                 tour.id,
