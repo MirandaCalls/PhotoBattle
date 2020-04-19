@@ -46,3 +46,13 @@ a {
 	cursor: pointer;
 	background-color: #007bff;	
 }
+
+.list-page-controls {
+	display: flex;
+}
+
+.homepage-welcome {
+	margin: auto;
+    max-width: 430px;
+    text-align: center;
+}

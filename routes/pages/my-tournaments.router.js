@@ -44,7 +44,7 @@ router.post('/', params, async(req, res) => {
 		return returnErrorResponse(req, res, req.body, result);
     }
 
-    res.redirect('/my-tournaments');
+    res.redirect('/battle/' + result.id );
 });
 
 let returnErrorResponse = (req, res, formData, message) => {

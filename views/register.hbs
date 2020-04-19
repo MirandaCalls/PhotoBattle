@@ -37,7 +37,6 @@ window.addEventListener('load', function() {
         form.classList.add('was-validated');
     });
 });
-
 function passwordsMatch() {
     let initial = document.getElementById('password');
     let repeat = document.getElementById('passwordRepeat');
@@ -48,4 +47,6 @@ function passwordsMatch() {
     repeat.setCustomValidity('');
     return true;
 }
+
+$('#passwordRepeat').on('input', passwordsMatch);
 </script>

@@ -1,12 +1,13 @@
-<div class="mt-2"></div>
 <div class="container">
 	<div class="row">
 		{{#each champions}}
-			<div class="card col-sm-4">
-				<img src="{{this.photo_url}}" class="card-img-top">
-				<div class="card-body">
-					<h5 class="card-title">{{this.tour_name}} 👑</h5>
-					<p class="card-text">{{this.username}}</p>
+			<div class="col-md-4">
+				<div class="card mt-2">
+					<img src="{{this.photo_url}}" class="card-img-top">
+					<div class="card-body">
+						<h5 class="card-title">{{this.tour_name}} 👑</h5>
+						<p class="card-text">{{this.username}}</p>
+					</div>
 				</div>
 			</div>
 		{{/each}}

@@ -1,7 +1,13 @@
 <div class="mt-2"></div>
 {{#if serverMessage}}
-	<div class="alert alert-danger">{{serverMessage}}</div>
+<div class="alert alert-danger">{{serverMessage}}</div>
 {{/if}}
+<div class="mb-2 list-page-controls">
+	<p class="mr-auto">Create tournaments and continue ones you left in progress.</p>
+	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal_create">
+	➕New
+	</button>
+</div>
 <table class="table">
 	<thead>
 		<tr>
@@ -10,22 +16,42 @@
 		</tr>
 	</thead>
 	<tbody>
-		{{#each tourList}}
-		<tr>
-			<td>{{this.name}}</td>
-			<td><a href="/battle/{{this.id}}">Battle</a></td>
-		</tr>
-		{{/each}}
-		<tr>
-			<form id="form_add" action="/my-tournaments" method="POST">
-				<td><div class="form-group">
-					<input type="text" id="name" class="form-control" name="name" placeholder="Name" value="{{formData.name}}" required>
-					<div class="invalid-feedback">
-						Name is required.
-					</div>
-				</div></td>
-				<td><button class="btn btn-primary">Create</button></td>
-			</form>
-		</tr>
+		{{#if tourList}}
+			{{#each tourList}}
+				<tr>
+					<td>{{this.name}}</td>
+					<td><a href="/battle/{{this.id}}">Battle</a></td>
+				</tr>
+			{{/each}}
+		{{else}}
+			<tr><td>You have no tournament in progress.</td></tr>
+		{{/if}}
 	</tbody>
 </table>
+<div class="modal fade" id="modal_create" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Create Tournament</h5>
+				<button type="button" class="close" data-dismiss="modal">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="form_add" action="/my-tournaments" method="POST">
+					<p>Create a memorable name for this tournament. The name will be displayed to other users once the champion image has been chosen.</p>
+					<div class="form-group">
+						<input type="text" id="name" class="form-control" name="name" placeholder="Name"
+							value="{{formData.name}}" required>
+						<div class="invalid-feedback">
+							Name is required.
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-primary" form="form_add">Start</button>
+			</div>
+		</div>
+	</div>
+</div>
