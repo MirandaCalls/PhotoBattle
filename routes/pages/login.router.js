@@ -7,7 +7,7 @@ let router = express.Router();
 /**
  * GET /login
  * 
- * Loads the login page
+ * Loads the login page.
  */
 router.get('/', function (req, res) {
 	if (req.session.user) {
@@ -19,7 +19,7 @@ router.get('/', function (req, res) {
 /**
  * POST /login
  * 
- * Route to log a user in
+ * Submits a user's request to log in.
  */
 let login_params = [
     check('username').exists().isLength({min: 1}),

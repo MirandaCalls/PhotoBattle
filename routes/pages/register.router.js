@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
  * Route to create a new user
  */
 let register_params = [
-    check('username').exists().isLength({min: 1}),
+    check('username').exists().isLength({min: 1, max: 50}),
     check('password').exists().isLength({min: 8, max: 50})
 ];
 router.post('/', register_params, async(req, res) => {

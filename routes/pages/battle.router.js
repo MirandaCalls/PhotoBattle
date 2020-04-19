@@ -1,9 +1,15 @@
 const express = require('express');
 const {check, validationResult} = require('express-validator');
+const RouterCommon = require('../common');
 const TourController = require('../../controllers/tournaments').TourController;
 
 let router = express.Router();
 
+/**
+ * GET /battle/{id}
+ * 
+ * Loads the battle page for a tournament.
+ */
 router.get('/:id', async(req, res) => {
     if (!req.session.user) {
 		return res.redirect('/login');
@@ -15,16 +21,16 @@ router.get('/:id', async(req, res) => {
 		return returnErrorResponse(req, res, result);
 	}
 
-	let page_data = {
-		title: 'Battle',
-		loggedIn: true,
-		username: req.session.user.username,
-		matchup: result
-	};
-
+	let page_data = RouterCommon.buildBasePageData(req, 'Battle');
+	page_data.matchup = result;
 	res.render('battle', page_data);
 });
 
+/**
+ * POST /battle/{id}
+ * 
+ * Submits a user's vote for a matchup on a tournament.
+ */
 let params = [
 	check('matchup_id').exists().isInt(),
     check('choice_id').exists().isInt(),
@@ -53,12 +59,9 @@ router.post('/:id', params, async(req, res) => {
 });
 
 let returnErrorResponse = (req, res, message) => {
-    res.render('battle', {
-        title: 'Battle',
-		serverMessage: message,
-		loggedIn: true,
-		username: req.session.user.username
-    });
+	let page_data = RouterCommon.buildBasePageData(req, 'Battle');
+	page_data.serverMessage = message;
+    res.render('battle', page_data);
 }
 
 module.exports = router;

@@ -41,8 +41,7 @@
 				<form id="form_add" action="/my-tournaments" method="POST">
 					<p>Create a memorable name for this tournament. The name will be displayed to other users once the champion image has been chosen.</p>
 					<div class="form-group">
-						<input type="text" id="name" class="form-control" name="name" placeholder="Name"
-							value="{{formData.name}}" required>
+						<input type="text" id="name" class="form-control" name="name" placeholder="Name" value="{{formData.name}}" maxlength="128" required>
 						<div class="invalid-feedback">
 							Name is required.
 						</div>

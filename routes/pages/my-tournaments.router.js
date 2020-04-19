@@ -1,29 +1,33 @@
 const express = require('express');
+const RouterCommon = require('../common');
 const {check, validationResult} = require('express-validator');
 const TourController = require('../../controllers/tournaments').TourController;
 
 let router = express.Router();
 
+/**
+ * GET /my-tournaments
+ * 
+ * Loads the tournaments page for a user to create or continue tournaments.
+ */
 router.get('/', async(req, res) => {
 	if (!req.session.user) {
 		return res.redirect('/login');
 	}
 
 	let controller = new TourController(req.app.models, req.app.config.photosUrl);
-	let tour_list = await controller.getTournamentsForUser(req.session.user.id);
-
-	let page_data = {
-		title: 'My Tournaments',
-		loggedIn: true,
-		username: req.session.user.username,
-		tourList: tour_list
-	};
-
+    let page_data = RouterCommon.buildBasePageData(req, 'My Tournaments');
+    page_data.tourList = await controller.getTournamentsForUser(req.session.user.id);
 	res.render('my-tournaments', page_data);
 });
 
+/**
+ * POST /my-tournaments
+ * 
+ * Submits a request to create a new tournament.
+ */
 let params = [
-    check('name').exists().isLength({min: 1}),
+    check('name').exists().isLength({min: 1, max: 128}),
 ];
 router.post('/', params, async(req, res) => {
     if (!req.session.user) {
@@ -48,13 +52,10 @@ router.post('/', params, async(req, res) => {
 });
 
 let returnErrorResponse = (req, res, formData, message) => {
-    res.render('my-tournaments', {
-        title: 'My Tournaments',
-        serverMessage: message,
-        formData: formData,
-        loggedIn: true,
-        username: req.session.user.username
-    });
+    let page_data = RouterCommon.buildBasePageData(req, 'My Tournaments');
+    page_data.serverMessage = message;
+    page_data.formData = formData;
+    res.render('my-tournaments', page_data);
 }
 
 module.exports = router;

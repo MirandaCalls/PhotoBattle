@@ -14,15 +14,24 @@ module.exports.TourController = class TourController {
     }
 
     /**
-     * @param {number} userId 
+     * Gets a list of unfinished tournaments to display
+     * on the "My Tournaments" page
+     * 
+     * @param {number} userId
+     * 
+     * @returns {EntityTournament[]}
      */
     async getTournamentsForUser(userId) {
         return await this.tours.getActiveTournamentsForUser(userId);
     }
 
     /**
+     * Fetches the next matchup for the user to vote for.
+     * 
      * @param {number} userId
      * @param {number} tourId
+     * 
+     * @returns {EntityMatchup|string} - Matchup entity or string for error
      */
     async battleById(userId, tourId) {
         let tour = await this.tours.getTournamentById(tourId);
@@ -49,11 +58,14 @@ module.exports.TourController = class TourController {
     }
 
     /**
+     * Submits the user's vote for a matchup.
+     * 
      * @param {number} userId 
      * @param {number} matchupId 
      * @param {number} photoId
      * 
-     * @returns {boolean} - Whether the tournament has a champion
+     * @returns {boolean|string} - Whether the tournament now has a champion
+     *                             or string error message.
      */
     async vote(userId, matchupId, photoId) {
         let matchup = await this.tours.getMatchupById(matchupId);
@@ -70,6 +82,10 @@ module.exports.TourController = class TourController {
             return 'You cannot battle for another user\'s tournament.';
         }
 
+        if (matchup.photo_a_id != photoId && matchup.photo_b_id != photoId) {
+            return 'Invalid choice.';
+        }
+
         matchup.winner_id = photoId;
         await this.tours.setMatchupWinner(matchup.winner_id, matchup.id);
 
@@ -82,9 +98,11 @@ module.exports.TourController = class TourController {
     }
 
     /**
+     * Sets up the next round of the tournament if there are any remaining.
+     * 
      * @param {EntityTour} tour
      * 
-     * @param {SVGAnimatedBoolean}
+     * @param {boolean} - Whether the tournament now has a champion
      */
     async _buildNextRound(tour, oldRound) {
         let old_matchups = await this.tours.getMatchupsByRound(tour.id, oldRound);
@@ -116,8 +134,12 @@ module.exports.TourController = class TourController {
     }
 
     /**
+     * Creates a new tournament for the user to vote on.
+     * 
      * @param {number} userId 
-     * @param {string} name 
+     * @param {string} name
+     * 
+     * @returns {EntityTournament|string} - New tournament entity or error message
      */
     async createTournament(userId, name) {
         let response;
@@ -154,6 +176,12 @@ module.exports.TourController = class TourController {
         return new_tour;
     }
 
+    /**
+     * Returns a list of the last 50 champions to display on the public
+     * "Champions" page.
+     * 
+     * @returns {EntityChampion[]}
+     */
     async getChampions() {
         return await this.tours.getChampions();
     }

@@ -1,3 +1,6 @@
+/**
+ * Represents a photo that can be voted on in a tournament.
+ */
 class EntityPhoto {
     constructor(id, url) {
         this.id = id;
@@ -5,6 +8,9 @@ class EntityPhoto {
     }
 }
 
+/**
+ * Represents a single elimination tournament.
+ */
 class EntityTournament {
     constructor(id, userId, name) {
         this.id = id;
@@ -13,6 +19,10 @@ class EntityTournament {
     }
 }
 
+/**
+ * Represents a matchup between two photos for a tournament.
+ * Stores the winner of the matchup.
+ */
 class EntityMatchup {
     constructor(id, tourId, round, photoAId, photoBId, winnerId) {
         this.id = id;
@@ -39,6 +49,9 @@ class EntityMatchup {
     }
 }
 
+/**
+ * Represents the winner of a tournment.
+ */
 class EntityChampion {
     constructor(id, tourId, photoId) {
         this.id = id;
@@ -70,6 +83,13 @@ class ModelTournament {
         this.db = db;
     }
 
+    /**
+     * Fetch a single tournament by id.
+     * 
+     * @param {number} id 
+     * 
+     * @returns {EntityTournament}
+     */
     async getTournamentById(id) {
         let query = "SELECT * FROM tournaments WHERE id = ?";
         let result = await this.db.get(query, [id]);
@@ -84,6 +104,13 @@ class ModelTournament {
         );
     }
 
+    /**
+     * Fetches all unfinished tournaments for a given user.
+     * 
+     * @param {number} userId 
+     * 
+     * @returns {EntityTournament[]}
+     */
     async getActiveTournamentsForUser(userId) {
         let query = `
             SELECT 
@@ -111,6 +138,8 @@ class ModelTournament {
     }
 
     /**
+     * Creates a new tournament.
+     * 
      * @param {EntityTournament}
      */
     async createTournament(entity) {
@@ -128,6 +157,13 @@ class ModelTournament {
         entity.id = result.id;
     }
 
+    /**
+     * Fetches a photo by id.
+     * 
+     * @param {number} id 
+     * 
+     * @returns {EntityPhoto}
+     */
     async getPhotoById(id) {
         let query = "SELECT * FROM photos WHERE id = ?";
         let result = await this.db.get(query, [id]);
@@ -142,6 +178,8 @@ class ModelTournament {
     }
 
     /**
+     * Creates a new photo.
+     * 
      * @param {EntityPhoto} entity 
      */
     async createPhoto(entity) {
@@ -158,6 +196,14 @@ class ModelTournament {
         entity.id = result.id;
     }
 
+    /**
+     * Fetches all matchups with undecided winners
+     * for the latest round in a tournament
+     * 
+     * @param {id} id - Id of a tournament
+     * 
+     * @returns {EntityMatchup[]} - Extra data: tournament names
+     */
     async getCurrentMatchupsForTour(id) {
         let query = `
             SELECT
@@ -191,6 +237,13 @@ class ModelTournament {
         return matchups;
     }
 
+    /**
+     * Get a matchup by id.
+     * 
+     * @param {number} id
+     * 
+     * @returns {EntityMatchup}
+     */
     async getMatchupById(id) {
         let query = "SELECT * FROM matchups WHERE id = ?";
         let result = await this.db.get(query, [id]);
@@ -208,6 +261,14 @@ class ModelTournament {
         )
     }
 
+    /**
+     * Fetches all matchups for a tournament and given round.
+     * 
+     * @param {number} tourId 
+     * @param {number} round
+     * 
+     * @returns {EntityMatchup[]}
+     */
     async getMatchupsByRound(tourId, round) {
         let query = 'SELECT * FROM matchups WHERE tour_id = ? and round = ?';
         let results = await this.db.all(query, [tourId, round]);
@@ -226,7 +287,9 @@ class ModelTournament {
     }
 
     /**
-     * @params {EntityMatchup} entity
+     * Creates a new matchup.
+     * 
+     * @param {EntityMatchup} entity
      */
     async createMatchup(entity) {
         let query = `
@@ -245,11 +308,22 @@ class ModelTournament {
         entity.id = result.id;
     }
 
+    /**
+     * Sets the winner for a matchup.
+     * 
+     * @param {number} winnerId 
+     * @param {number} matchupId 
+     */
     async setMatchupWinner(winnerId, matchupId) {
         let query = 'UPDATE matchups SET winner_id = ? WHERE id = ?';
         await this.db.run(query, [winnerId, matchupId]);
     }
 
+    /**
+     * Fetches all champions.
+     * 
+     * @returns {EntityChampion[]} - Extra data: tournament name, username, photo url
+     */
     async getChampions() {
         let query = `
             SELECT
@@ -282,6 +356,11 @@ class ModelTournament {
         return champions;
     }
 
+    /**
+     * Get champion of a tournament.
+     * 
+     * @param {number} id - Id of a tournament
+     */
     async getChampionByTourId(id) {
         let query = "SELECT * FROM champions WHERE tour_id = ?";
         let result = await this.db.get(query, [id]);
@@ -296,6 +375,11 @@ class ModelTournament {
         );
     }
 
+    /**
+     * Creates a new champion.
+     * 
+     * @param {EntityChampion} entity 
+     */
     async createChampion(entity) {
         let query = `
             INSERT INTO champions (

@@ -4,7 +4,7 @@
         <div class="alert alert-danger">{{serverMessage}}</div>
     {{/if}}
     <div class="form-group">
-        <input type="text" id="username" class="form-control" name="username" placeholder="Username" value="{{formData.username}}" required>
+        <input type="text" id="username" class="form-control" name="username" placeholder="Username" value="{{formData.username}}" maxlength="50" required>
         <div class="invalid-feedback">
             Please choose a username.
         </div>
